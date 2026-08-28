@@ -1,0 +1,27 @@
+# Ensure WASM is served with the correct MIME type — some shared hosts
+# default unknown extensions to text/plain, which breaks
+# WebAssembly.instantiateStreaming() in the browser.
+<IfModule mod_mime.c>
+  AddType application/wasm .wasm
+</IfModule>
+
+<IfModule mod_headers.c>
+  # COOP/COEP habilitan SharedArrayBuffer → onnxruntime corre multi-thread y
+  # el quitado de fondo es bastante más rápido. Todos los assets son propios
+  # (modelo self-hosteado) y Google Fonts manda CORP: cross-origin, así que
+  # require-corp no bloquea nada.
+  Header set Cross-Origin-Opener-Policy "same-origin"
+  Header set Cross-Origin-Embedder-Policy "require-corp"
+
+  # Defensa en profundidad: cualquier XSS residual o dependencia comprometida
+  # queda sin red externa ni scripts inyectables. Igual que la meta CSP que el
+  # build inyecta en index.html (para hostings nginx que ignoran .htaccess),
+  # más frame-ancestors que solo funciona como header.
+  Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+  Header set X-Content-Type-Options "nosniff"
+
+  # Los chunks del modelo y los assets con hash en el nombre son inmutables.
+  <FilesMatch "^[0-9a-f]{64}$|-[A-Za-z0-9_-]{8}\.(js|css|wasm|woff2?)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>

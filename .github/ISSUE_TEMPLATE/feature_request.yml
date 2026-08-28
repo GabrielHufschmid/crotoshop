@@ -1,0 +1,34 @@
+name: Proponer una mejora
+description: Mejora concreta sobre una herramienta o flujo existente.
+title: "enhancement: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema a resolver
+      description: Describí el trabajo que hoy resulta lento, confuso o impreciso.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Propuesta
+      description: Explicá el comportamiento deseado, sin atarlo necesariamente a una implementación.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas consideradas
+
+  - type: dropdown
+    id: variant
+    attributes:
+      label: Variante
+      options:
+        - Ambas
+        - Web
+        - Desktop

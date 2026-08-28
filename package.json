@@ -1,0 +1,50 @@
+{
+  "name": "crotoshop",
+  "private": true,
+  "version": "2.0.0",
+  "description": "Editor híbrido de imágenes y vectores que corre localmente en el navegador",
+  "author": "Gabriel Hufschmid",
+  "license": "UNLICENSED",
+  "homepage": "https://apps.gabi.com.ar/crotoshop/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GabrielHufschmid/crotoshop.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GabrielHufschmid/crotoshop/issues"
+  },
+  "engines": {
+    "node": ">=22.12.0",
+    "npm": ">=10"
+  },
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/fetch-imgly-data.mjs --quiet",
+    "dev": "vite",
+    "prebuild": "node scripts/fetch-imgly-data.mjs --quiet",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "test": "vitest run",
+    "preview": "vite preview",
+    "fetch-models": "node scripts/fetch-imgly-data.mjs"
+  },
+  "dependencies": {
+    "@imgly/background-removal": "^1.7.0",
+    "@okathira/ghostpdl-wasm": "^1.1.0",
+    "pdfjs-dist": "^6.2.108",
+    "react": "^19.2.7",
+    "react-colorful": "^5.7.0",
+    "react-dom": "^19.2.7",
+    "zustand": "^5.0.14"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.2",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
+    "oxlint": "^1.71.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.1.1",
+    "vitest": "^4.1.10"
+  }
+}
